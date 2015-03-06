@@ -43,6 +43,28 @@
 
             <EditText
                 android:id="@+id/username"
+                android:text="Shruti"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:layout_weight="1" >
+
+            </EditText>
+
+        </TableRow>
+
+        <TableRow android:layout_marginTop="20dip" >
+
+            <TextView android:text="Region Code :"
+                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dip"></TextView>
+
+            <EditText
+                android:id="@+id/regioncode"
+                android:text="+91"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="20dip"
@@ -63,6 +85,7 @@
 
             <EditText
                 android:id="@+id/phnumber"
+                android:text="7680928007"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="20dip"
