@@ -1,5 +1,7 @@
 package com.themeinnov8.code.familyclock;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -10,18 +12,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.telephony.TelephonyManager;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
-import com.microsoft.windowsazure.mobileservices.*;
-import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
-import com.microsoft.windowsazure.mobileservices.table.*;
+//import com.microsoft.windowsazure.mobileservices.*;
+//import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
+//import com.microsoft.windowsazure.mobileservices.notifications.Registration;
+//import com.microsoft.windowsazure.mobileservices.table.*;
+
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+
+//import org.json.JSONException;
+//import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 
 public class RegistrationActivity extends ActionBarActivity {
 
     private EditText username, regioncode, phnumber;
-    private Button register;
+    private Button register, register2;
 
 
     // Mobile Service Client reference
@@ -29,6 +40,13 @@ public class RegistrationActivity extends ActionBarActivity {
 
     // Mobile Service Table used to access data
     private com.microsoft.windowsazure.mobileservices.table.MobileServiceTable<Member> memberTable;
+    private String IMEI;
+
+    private int salt;
+    private String guid;
+
+    public static String registrationfile = "RegistrationFile";
+    public static SharedPreferences sharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +54,8 @@ public class RegistrationActivity extends ActionBarActivity {
         setContentView(R.layout.activity_registration);
 
         initializeComponents();
+
+        loadSharedPreferences();
 
         setOnClickListeners();
 
@@ -45,6 +65,10 @@ public class RegistrationActivity extends ActionBarActivity {
         } catch (MalformedURLException e) {
             Log.d("Family Clock Logs", "Exception : "+e.getMessage());
         }
+    }
+
+    private void loadSharedPreferences() {
+        sharedPrefs = getSharedPreferences(registrationfile, MODE_PRIVATE);
     }
 
     private void initializeMobileServiceClient() throws MalformedURLException {
@@ -66,22 +90,73 @@ public class RegistrationActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                // Connect to MS Azure Mobile Service and Send the NEW REGISTRATION details.
-
-                Member newMember = createNewMember();
-
-                Log.d("Family Clock Logs", "New User Created.");
-
-                // Get the Mobile Service Table instance to use
-                memberTable = mClient.getTable("UserRegistration", Member.class);
-
-                addNewMember(newMember);
-
+                sendRequest();
             }
         });
     }
 
-    private void addNewMember(final Member newMember) {
+    private void sendRequest() {
+
+        Member member = createNewMember();
+
+        Log.d("Family Clock Logs", "Sending request from device with IMEI = "+member.imei);
+
+        ListenableFuture<RegistrationResponse> result = mClient.invokeApi("registration", member, RegistrationResponse.class);
+
+        Log.d("Family Clock Logs", "Result : "+result.toString());
+
+        Futures.addCallback(result, new FutureCallback<RegistrationResponse>() {
+            @Override
+            public void onFailure(Throwable exc) {
+                Throwable cause = exc.getCause();
+                Log.d("Family Clock Logs", "Error : "+exc.toString());
+                Log.d("Family Clock Logs", "Cause : "+cause.toString());
+            }
+
+            @Override
+            public void onSuccess(RegistrationResponse result) {
+                Log.d("Family Clock Logs", "Response from server : "+result.toString());
+                Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT);
+
+                extractSALTandGUID(result);
+
+                storeInSharedPreferences();
+
+                gotoFamilyClock();
+            }
+        });
+
+    }
+
+    private void storeInSharedPreferences() {
+
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+
+        //editor.putString("salt", salt);
+        //editor.putString("guid", guid);
+        //editor.putString("name", username.getText().toString());
+        //editor.putString("rcode", regioncode.getText().toString());
+        //editor.putString("phno", phnumber.getText().toString());
+
+        editor.commit();
+
+    }
+
+
+    private void extractSALTandGUID(RegistrationResponse result) {
+        // salt = ;
+        // guid = ;
+    }
+
+    private void gotoFamilyClock() {
+
+        Intent familyClock = new Intent(this, FamilyClockActivity.class);
+        RegistrationActivity.this.finish();
+        startActivity(familyClock);
+
+    }
+
+    /*private void addNewMember(final Member newMember) {
         Log.d("Family Clock Logs", "Adding New User... ");
         if (mClient == null) {
             return;
@@ -96,11 +171,11 @@ public class RegistrationActivity extends ActionBarActivity {
                         @Override
                         public void onCompleted(Member entity, Exception exception, ServiceFilterResponse response) {
                             if(exception==null) {
-                                Log.d("Family Clock Logs", "Registration Successful.");
-                                //Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT);
+                                Log.d("Family Clock Logs", "com.themeinnov8.code.familyclock.Registration Successful.");
+                                //Toast.makeText(getApplicationContext(), "com.themeinnov8.code.familyclock.Registration Successful", Toast.LENGTH_SHORT);
                             } else {
                                 Throwable cause = exception.getCause();
-                                Log.d("Family Clock Logs", "Error in Registration : "+exception.toString());
+                                Log.d("Family Clock Logs", "Error in com.themeinnov8.code.familyclock.Registration : "+exception.toString());
                                 Log.d("Family Clock Logs", "Cause : "+cause.toString());
                             }
                         }
@@ -112,27 +187,27 @@ public class RegistrationActivity extends ActionBarActivity {
                         @Override
                         public void run() {
 
-                            Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT);
+                            Toast.makeText(getApplicationContext(), "com.themeinnov8.code.familyclock.Registration Successful", Toast.LENGTH_SHORT);
                         }
                     });
-                    //Log.d("Family Clock Logs", "Registration Successful.");
+                    //Log.d("Family Clock Logs", "com.themeinnov8.code.familyclock.Registration Successful.");
                 } catch (Exception e){
-                    Toast.makeText(getApplicationContext(), "Error in Registration! Please try again.", Toast.LENGTH_SHORT);
-                    Log.d("Family Clock Logs", "Registration Exception : "+e.getMessage());
+                    Toast.makeText(getApplicationContext(), "Error in com.themeinnov8.code.familyclock.Registration! Please try again.", Toast.LENGTH_SHORT);
+                    Log.d("Family Clock Logs", "com.themeinnov8.code.familyclock.Registration Exception : "+e.getMessage());
                 }
 
                 return null;
             }
         }.execute();
-    }
+    }*/
 
     private Member createNewMember() {
         Member member = new Member();
 
-        member.set_name(""+username.getText());
-        member.set_rcode(""+regioncode.getText());
-        member.set_phno(Long.parseLong(phnumber.getText().toString()));
-        member.set_imei("12345cgfh34nk");
+        member.name = username.getText().toString();
+        member.imei = getIMEI();
+        member.phno = phnumber.getText().toString();
+        member.rcode = regioncode.getText().toString();
 
         return member;
     }
@@ -157,5 +232,11 @@ public class RegistrationActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public String getIMEI() {
+        TelephonyManager telephonyMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+        String m_deviceId = telephonyMgr.getDeviceId();
+        return m_deviceId;
     }
 }

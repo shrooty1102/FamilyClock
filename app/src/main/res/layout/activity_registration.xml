@@ -6,7 +6,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".RegistrationActivity"
     style="@style/TextAppearance.AppCompat.Headline">
 
-    <TextView android:text="Weasley Clock" android:layout_width="wrap_content"
+    <TextView android:text="Family Clock" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvAppName"
         android:textStyle="bold|italic"
@@ -25,87 +25,94 @@
         android:paddingBottom="20dp"
         android:layout_below="@+id/tvAppName" />
 
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/tvRegistration">
 
-        <TableRow android:layout_marginTop="20dip" >
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tvRegistration">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="Your Name :"
-                android:textSize="20sp"
-                android:textColor="#000000"
-                android:layout_marginLeft="20dip"
-                ></TextView>
+            <TableRow android:layout_marginTop="20dip" >
 
-            <EditText
-                android:id="@+id/username"
-                android:text="Shruti"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dip"
-                android:layout_marginRight="20dip"
-                android:layout_weight="1" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Your Name :"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:layout_marginLeft="5dip" ></TextView>
 
-            </EditText>
+                <EditText
+                    android:id="@+id/username"
+                    android:text="Shruti"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_weight="1" >
 
-        </TableRow>
+                </EditText>
 
-        <TableRow android:layout_marginTop="20dip" >
+            </TableRow>
 
-            <TextView android:text="Region Code :"
-                android:layout_width="wrap_content"
-                android:textSize="20sp"
-                android:textColor="#000000"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dip"></TextView>
+            <TableRow android:layout_marginTop="20dip" >
 
-            <EditText
-                android:id="@+id/regioncode"
-                android:text="+91"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dip"
-                android:layout_marginRight="20dip"
-                android:layout_weight="1" >
+                <TextView android:text="Region Code :"
+                    android:layout_width="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dip"></TextView>
 
-            </EditText>
+                <EditText
+                    android:id="@+id/regioncode"
+                    android:text="+91"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_weight="1" >
 
-        </TableRow>
+                </EditText>
 
-        <TableRow android:layout_marginTop="20dip" >
+            </TableRow>
 
-            <TextView android:text="Phone Number :"
-                android:layout_width="wrap_content"
-                android:textSize="20sp"
-                android:textColor="#000000"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dip"></TextView>
+            <TableRow android:layout_marginTop="20dip" >
 
-            <EditText
-                android:id="@+id/phnumber"
-                android:text="7680928007"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dip"
-                android:layout_marginRight="20dip"
-                android:layout_weight="1" >
+                <TextView android:text="Phone Number :"
+                    android:layout_width="wrap_content"
+                    android:textSize="20sp"
+                    android:textColor="#000000"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dip"></TextView>
 
-            </EditText>
+                <EditText
+                    android:id="@+id/phnumber"
+                    android:text="7680928007"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_weight="1" >
 
-        </TableRow>
+                </EditText>
 
-        <TableRow android:gravity="center" android:layout_marginTop="20dip" >
+            </TableRow>
 
-            <Button
-                android:text="Register"
-                android:clickable="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/register"
-                android:layout_span="2" ></Button>
-        </TableRow>
+            <TableRow android:gravity="center" android:layout_marginTop="20dip" >
 
-    </TableLayout>
+                <Button
+                    android:text="Register"
+                    android:clickable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/register"
+                    android:layout_span="2" ></Button>
+            </TableRow>
+
+        </TableLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

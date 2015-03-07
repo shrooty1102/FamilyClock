@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:background="@drawable/background"
+    tools:context="com.themeinnov8.code.familyclock.FamilyClockActivity$PlaceholderFragment">
+
+
+    <TableLayout
+        android:id="@+id/tbl1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true">
+
+        <TableRow android:layout_marginTop="30dip">
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="GPS Status :"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:layout_marginLeft="5dip" ></TextView>
+            <Switch
+                android:id="@+id/gpsSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
+
+        </TableRow>
+
+        <TableRow android:layout_marginTop="30dip">
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="What are you doing?"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:layout_marginLeft="5dip" ></TextView>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="10dip">
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="I am :"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:layout_marginLeft="5dip" ></TextView>
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:text="doing nothing"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:clickable="true"
+                android:layout_marginLeft="5dip" ></TextView>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="30dip">
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Where?"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:layout_marginLeft="5dip" ></TextView>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="10dip">
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="I am at :"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:layout_marginLeft="5dip" ></TextView>
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:text="nowhere"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:clickable="true"
+                android:layout_marginLeft="5dip" ></TextView>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="10dip">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set using GPS"
+                android:id="@+id/button"
+                android:layout_column="1" />
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:layout_marginTop="30dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tbl1"
+        android:text="Save my Status"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btnSave" />
+
+</RelativeLayout>
