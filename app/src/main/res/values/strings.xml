@@ -11,4 +11,6 @@
     <string name="title_section3">Section 3</string>
     <string name="title_activity_family_clock">FamilyClockActivity</string>
     <string name="title_activity_start_app">StartAppActivity</string>
+    <string name="title_activity_saltconfirmation">SALTConfirmationActivity</string>
+    <string name="title_activity_name">NameActivity</string>
 </resources>

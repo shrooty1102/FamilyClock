@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ProgressBar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+
+import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+
+import java.net.MalformedURLException;
 
 
 public class StartAppActivity extends Activity {
@@ -22,6 +27,9 @@ public class StartAppActivity extends Activity {
 
     String salt, guid;
 
+    // Mobile Service Client reference
+    public static MobileServiceClient mClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +40,20 @@ public class StartAppActivity extends Activity {
 
         loadSharedPreferences();
 
+        try {
+            Log.d("Family Clock Logs", "Initializing mobile service client... Entered try.");
+            initializeMobileServiceClient();
+        } catch (MalformedURLException e) {
+            Log.d("Family Clock Logs", "Exception : "+e.getMessage());
+        }
+
         startLoadingApp();
+    }
+
+    private void initializeMobileServiceClient() throws MalformedURLException {
+        Log.d("Family Clock Logs", "Initializing mobile service client...");
+        mClient = new MobileServiceClient("https://familyclock2.azure-mobile.net/", "CpzlaeuCHlMWejwkEwMaMHEmIZhtgW53", this );
+        Log.d("Family Clock Logs", "Initialized mobile service client.");
     }
 
     private void loadSharedPreferences() {
