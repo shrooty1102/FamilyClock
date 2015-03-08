@@ -13,4 +13,5 @@
     <string name="title_activity_start_app">StartAppActivity</string>
     <string name="title_activity_saltconfirmation">SALTConfirmationActivity</string>
     <string name="title_activity_name">NameActivity</string>
+    <string name="title_activity_group_details">GroupDetailsActivity</string>
 </resources>
