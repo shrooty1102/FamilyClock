@@ -8,11 +8,63 @@
     android:background="@drawable/background"
     tools:context="com.themeinnov8.code.familyclock.FamilyClockActivity$PlaceholderFragment">
 
-    <TextView android:layout_width="fill_parent"
+    <TableLayout
+        android:id="@+id/tbl1"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Groups"
-        android:textSize="20dp"
-        android:layout_centerInParent="true"/>
+        android:layout_marginRight="10dip"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true">
+
+        <TableRow
+            android:layout_marginTop="30dip"
+            android:layout_width="fill_parent" >
+
+            <TextView
+                android:id="@+id/tvRefresh"
+                android:layout_width="wrap_content"
+                android:text="Refresh"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:layout_weight="0.3"
+                android:layout_marginRight="20dip"
+                android:layout_marginLeft="5dip" ></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:layout_marginRight="20dip"
+                android:layout_weight="0.4"
+                android:clickable="true"
+                android:layout_marginLeft="5dip" ></TextView>
+            <TextView
+                android:id="@+id/tvCreateNew"
+                android:layout_width="wrap_content"
+                android:text="+ Create Group"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:layout_weight="0.3"
+                android:clickable="true"
+                android:layout_marginLeft="5dip" ></TextView>
+
+        </TableRow>
+
+    </TableLayout>
+
+    <ScrollView
+        android:layout_below="@+id/tbl1"
+        android:layout_marginTop="15dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView1"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="192dp" />
+
+    </ScrollView>
 
 </RelativeLayout>

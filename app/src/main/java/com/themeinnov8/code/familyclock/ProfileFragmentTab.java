@@ -1,7 +1,12 @@
 package com.themeinnov8.code.familyclock;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +31,8 @@ import java.util.List;
  */
 public class ProfileFragmentTab extends Fragment {
 
+    private String deviceaddress;
+
     private View rootView;
 
     private Switch gpsSwitch;
@@ -34,12 +41,25 @@ public class ProfileFragmentTab extends Fragment {
 
     private GPSTracker gpsTracker;
 
+    private Location location;
+
+    final CharSequence[] locationplaces = {
+            "Home", "Office", "College", "Restaurant", "Library", "Hospital", "Friend's Place", "Playground"
+    };
+
+    final CharSequence[] doingactivity = {
+            "Relaxing", "Working", "Studying", "in Mortal Peril", "Reading", "Partying", "Playing Quidditch", "Travelling",
+            "Having food", "Lost", "Sleeping", "at War"
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
         initializeComponents();
+
+        loadSharedPreferences();
 
         setGPSswitchstatus();
 
@@ -48,9 +68,16 @@ public class ProfileFragmentTab extends Fragment {
         return rootView;
     }
 
+    private void loadSharedPreferences() {
+
+        tvStatus.setText(StartAppActivity.profileSharedPrefs.getString("status", "doing nothing"));
+        tvLocation.setText(StartAppActivity.profileSharedPrefs.getString("location", "0, 0"));
+
+    }
+
     private void initializeComponents() {
 
-        gpsTracker = new GPSTracker(getActivity().getApplicationContext());
+        gpsTracker = new GPSTracker(getActivity());
 
         gpsSwitch = (Switch) rootView.findViewById(R.id.gpsSwitch);
 
@@ -81,6 +108,12 @@ public class ProfileFragmentTab extends Fragment {
                     gpsTracker.showSettingsAlert();
                 }
 
+                location = gpsTracker.getLocation();
+
+                LocationAddress locationaddress = new LocationAddress(getActivity(), location, gpsTracker.canGetLocation());
+
+                deviceaddress = locationaddress.getLocationAddress();
+                tvLocation.setText(deviceaddress);
             }
         });
 
@@ -91,15 +124,51 @@ public class ProfileFragmentTab extends Fragment {
                 sendRequest();
             }
         });
+
+        // onClickListener for tvLocation
+        tvLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Set your Location");
+
+                builder.setItems(locationplaces, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        tvLocation.setText(locationplaces[item]);
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+
+        // onClickListener for tvStatus
+        tvStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Set your Status");
+
+                builder.setItems(doingactivity, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        tvStatus.setText(doingactivity[item]);
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 
     private void sendRequest() {
 
         String status = tvStatus.getText().toString();
-        String latitude = ""+gpsTracker.getLatitude();
-        String longitude = ""+gpsTracker.getLongitude();
 
-        String location = latitude+" ; "+longitude;
+        String location = tvLocation.getText().toString();
+
+        storeDataInSharedPreferences();
 
         com.google.gson.JsonObject member = new com.google.gson.JsonObject();
 
@@ -141,18 +210,15 @@ public class ProfileFragmentTab extends Fragment {
 
     }
 
-    /*private String getCurrentLocation() {
+    private void storeDataInSharedPreferences() {
 
-        String deviceAddress;
+        SharedPreferences.Editor editor = StartAppActivity.profileSharedPrefs.edit();
 
-        LocationAddress locationAddress = new LocationAddress();
-
-        //locationAddress.getAddressFromLocation(gpsTracker.getLatitude(), gpsTracker.getLongitude(),
-        //        getActivity().getApplicationContext(), new GeocoderHandler());
-
+        editor.putString("status", tvStatus.getText().toString());
+        editor.putString("location", tvLocation.getText().toString());
 
     }
-*/
+
     private void setGPSswitchstatus() {
 
         if(gpsTracker.isSystemGPSEnabled()) {

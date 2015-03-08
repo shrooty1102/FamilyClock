@@ -25,6 +25,9 @@ public class StartAppActivity extends Activity {
     public static String registrationfile = "RegistrationFile";
     public static SharedPreferences sharedPrefs;
 
+    public static String profiledatafile = "ProfileDataFile";
+    public static SharedPreferences profileSharedPrefs;
+
     String salt, guid;
 
     // Mobile Service Client reference
@@ -61,6 +64,8 @@ public class StartAppActivity extends Activity {
         sharedPrefs = getSharedPreferences(registrationfile, MODE_PRIVATE);
         salt = sharedPrefs.getString("salt", "");
         guid = sharedPrefs.getString("guid", "");
+
+        profileSharedPrefs = getSharedPreferences(profiledatafile, MODE_PRIVATE);
 
     }
 
