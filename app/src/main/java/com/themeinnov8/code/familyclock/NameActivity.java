@@ -71,10 +71,11 @@ public class NameActivity extends ActionBarActivity {
                 if(exception == null) {
 
                     String salt = result.getAsJsonObject().get("SALT").getAsString();
+                    String message = result.getAsJsonObject().get("message").getAsString();
 
-                    Log.d("Family Clock Logs", "SALT = " + salt);
+                    Log.d("Family Clock Logs", "message = " +message);
 
-                    if(salt.equals("222222")) {
+                    if(salt.equals("111111")) {
                         gotoFamilyClockActivity();
                     } else {
                         NameActivity.this.finish();

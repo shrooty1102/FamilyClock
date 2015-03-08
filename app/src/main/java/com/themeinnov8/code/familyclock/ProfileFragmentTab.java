@@ -4,6 +4,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,12 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.microsoft.windowsazure.mobileservices.ApiJsonOperationCallback;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
 
 import java.util.List;
 
@@ -72,9 +77,9 @@ public class ProfileFragmentTab extends Fragment {
             @Override
             public void onClick(View v) {
 
-                //String deviceAddress = getCurrentLocation();
-
-                //sendRequest();
+                if(!gpsTracker.isSystemGPSEnabled()) {
+                    gpsTracker.showSettingsAlert();
+                }
 
             }
         });
@@ -110,6 +115,29 @@ public class ProfileFragmentTab extends Fragment {
         } catch (JsonParseException e) {
             e.printStackTrace();
         }
+
+        StartAppActivity.mClient.invokeApi("statusupdate", member, "POST", null, new ApiJsonOperationCallback() {
+            @Override
+            public void onCompleted(JsonElement result, Exception exception, ServiceFilterResponse response) {
+                if(exception == null) {
+
+                    String salt = result.getAsJsonObject().get("SALT").getAsString();
+                    String message = result.getAsJsonObject().get("message").getAsString();
+
+                    Log.d("Family Clock Logs", "SALT = " + salt);
+                    Log.d("Family Clock Logs", "message = " + message);
+
+                    if(salt.equals("111111")) {
+                        Toast.makeText(getActivity().getApplicationContext(), "Status Saved", Toast.LENGTH_SHORT);
+                    } else {
+                        Toast.makeText(getActivity().getApplicationContext(), "Could not save your status", Toast.LENGTH_SHORT);
+                    }
+
+                } else {
+                    Log.d("Family Clock Logs", "Exception = " + exception.toString());
+                }
+            }
+        });
 
     }
 
